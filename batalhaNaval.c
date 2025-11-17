@@ -1,36 +1,65 @@
 #include <stdio.h>
 
+#define linha 3
+#define coluna 5
+
+void matrizFinal(int tabu[11][11], int obstaculo[linha][coluna], int lin, int colu){
+    for (int i = 0; i < linha; i++){
+        for (int j = 0; j < coluna; j++)
+        {
+            tabu[lin + i][colu + j] = obstaculo[i][j];
+        }
+    }
+    
+}
+
 int main(){
 
     int tabuleiro[11][11] = {0};
-    int linha_nav1 = 2, coluna_nav1 = 3;
-    int linha_nav2 = 4, coluna_nav2 = 8;
-    int linha_nav3 = 6, coluna_nav3 = 1;
-    int linha_nav4 = 3, coluna_nav4 = 6;
-    int navio[3] = {3, 3, 3};
     int base = 1;
-
-   //HORIZONTAL
-   for (int i = 0; i < 3; i++){
-    tabuleiro[linha_nav1][coluna_nav1 + i] = navio[i];
-   }
-
-   //VERTICAL
-   for (int j = 0; j < 3; j++){
-    tabuleiro[linha_nav2 + j][coluna_nav2] = navio[j];
-   }
-   
-   //DIAGONAIS
-   for (int i = 0; i < 3; i++){
-    for (int j = 0; j < 3; j++){
-      if (i == j)
-      {
-       tabuleiro[linha_nav3 + i][coluna_nav3 + j] = navio[i];
-       tabuleiro[linha_nav4 + i][coluna_nav4 - j] = navio[i];
-      }
+    int cone[linha][coluna] = {0};
+    int cruz[linha][coluna] = {0};
+    int losango[linha][coluna] = {0};
+    int centro = coluna/2;
+    
+    for (int i = 0; i < linha; i++){
+        int inicio = linha - 1 - i;
+        int fim    = linha - 1 + i;
+        for (int j = inicio; j <= fim; j++){
+            cone[i][j] = 3;
+        }
     }
-   }
-   
+
+    for (int i = 0; i < linha; i++){
+        for (int j = 0; j < coluna; j++){
+                if (i == linha/2)
+                {
+                    cruz[i][j] = 3;
+
+                } if (j == coluna/2)
+                {
+                    cruz[i][j] = 3;
+                }
+        }
+    }
+
+    for (int i = 0; i < linha; i++){
+        for (int j = 0; j < coluna; j++){
+                if (i == linha/2 && j < coluna - 2)
+                {
+                    losango[i][j + 1] = 3;
+
+                } if (j == coluna/2)
+                {
+                    losango[i][j] = 3;
+                }
+        }
+    }
+
+    matrizFinal(tabuleiro, cone, 1, 1);
+    matrizFinal(tabuleiro, cruz, 4, 5);
+    matrizFinal(tabuleiro, losango, 6, 1);
+
     printf(" TABULEIRO BATALHA NAVAL\n");
     printf("   A B C D E F G H I J  \n");
 
